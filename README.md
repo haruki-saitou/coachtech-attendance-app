@@ -1,4 +1,10 @@
 # attendance-app  
+  
+Attendance モデルrests() メソッドで「1対多」の関係  
+Rest モデル attendance() メソッドで「多対1」の逆引き  
+Attendance マイグレーション rest_start/end を削除し、rest_duration（合計時間）だけ残した  
+Rest マイグレーション attendance_id で親データと紐付け、終了時刻を nullable にしたことで、休憩中の状態を表現  
+  
 ## Laravel をインストール  
 docker run --rm \
     -u "$(id -u):$(id -g)" \
