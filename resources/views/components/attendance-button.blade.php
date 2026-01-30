@@ -9,7 +9,7 @@
 <form action="{{ $action }}" method="POST" class="flex-1">
     @csrf
     <button type="submit" {{ $disabled ? 'disabled' : '' }}
-        class="{{ $classes }} inline-block w-[200px] px-6 py-4 text-3xl font-bold rounded-2xl transition cursor-pointer">
+        class="{{ $classes }} inline-block w-[170px] px-6 py-4 text-2xl font-bold rounded-2xl transition cursor-pointer">
         {{ $text }}
     </button>
 </form>

@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rests', function (Blueprint $table) {
+        Schema::create('attendance_corrects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('start_at');
-            $table->dateTime('end_at')->nullable();
+            $table->dateTime('updated_check_in_at')->nullable();
+            $table->dateTime('updated_check_out_at')->nullable();
+            $table->text('updated_comment')->nullable();
+            $table->json('updated_rests')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rests');
+        Schema::dropIfExists('attendance_corrects');
     }
 };

@@ -37,10 +37,16 @@ class Attendance extends Model
         return $this->hasMany(Rest::class);
     }
 
+    // リレーションシップ: 勤怠修正申請
+    public function attendanceCorrect()
+    {
+        return $this->hasOne(AttendanceCorrect::class);
+    }
+
     // アクセサ: 休憩中かどうか
     public function getIsRestingAttribute()
     {
-        return $this->rests->whereNull('end_at')->exists();
+        return $this->rests->whereNull('end_at')->isNotEmpty();
     }
 
     // アクセサ: 総休憩時間（秒）, 実測値と法定最低休憩時間の大きい方

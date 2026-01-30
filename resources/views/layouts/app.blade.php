@@ -11,21 +11,21 @@
 
 <body class="{{ $bodyClass ?? 'bg-[#F0EFF2]' }}">
     <header class="bg-black text-white w-full">
-        <div class="max-w-[1400px] mx-auto px-8 py-3 flex flex-col items-center justify-between">
+        <div class="max-w-[1400px] mx-auto px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex-shrink-0">
                 <a href="{{ route('attendance.top') }}">
                     <img src="{{ asset('images/COACHTECH.png') }}" alt="COACHTECH" class="h-6 md:h-8">
                 </a>
             </div>
             @if (!Route::is('login') && !Route::is('register') && !Route::is('verification.notice'))
-                <nav class="flex items-center gap-4 lg:gap-6 text-sm lg:text-lg flex-shrink-0">
+                <nav class="flex items-center gap-6 lg:gap-8 text-md font-bold lg:text-md flex-shrink-0">
                     @auth
                         <a href="{{ route('attendance.top') }}" class="hover:text-gray-300">勤怠</a>
-                        <a href="{{ route('attendance.top') }}" class="hover:text-gray-300">勤怠一覧</a>
-                        <a href="{{ route('attendance.top') }}" class="hover:text-gray-300">申請</a>
+                        <a href="{{ route('attendance.list') }}" class="hover:text-gray-300">勤怠一覧</a>
+                        <a href="{{ route('stamp.list') }}" class="hover:text-gray-300">申請</a>
                         <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                             @csrf
-                            <button type="submit" class="hover:text-gray-300">ログアウト</button>
+                            <button type="submit" class="cursor-pointer hover:text-gray-300">ログアウト</button>
                         </form>
                     @endauth
                 </nav>
@@ -33,7 +33,7 @@
         </div>
     </header>
 
-    <main>
+    <main class="tracking-[0.15em]">
         @yield('content')
     </main>
     @yield('js')

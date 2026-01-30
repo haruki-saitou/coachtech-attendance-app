@@ -25,7 +25,7 @@
             <div id="real-time-clock" class="text-6xl font-bold text-center mt-2"></div>
         </div>
 
-        <div class="button-area flex justify-center gap-20 max-w-6xl mt-10">
+        <div class="button-area flex justify-center gap-16 max-w-6xl mt-10">
             @if (!$attendance)
                 <x-attendance-button text="出勤" action="{{ route('start.attendance') }}" type="main" />
             @elseif ($attendance->check_out_at)
