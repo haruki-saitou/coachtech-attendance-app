@@ -3,10 +3,10 @@
 @section('content')
     <div class="container max-w-[1400px] mx-auto px-2 py-2 flex flex-col items-center min-h-[calc(100vh-80px)]">
         <div class="w-full max-w-[900px] py-14 rounded-lg">
-            <h1 class="border-l-8 border-black pl-4 text-3xl font-bold mt-6 mb-6">勤怠一覧</h1>
+            <h1 class="border-l-8 border-black pl-4 text-3xl font-bold mt-6 mb-6">{{ $user->name }}さんの勤怠</h1>
             <div class="bg-white mt-10 py-2 px-4 rounded-lg flex items-center justify-between gap-8 mb-6">
                 {{-- 前月へ --}}
-                <a href="{{ route('attendance.list', ['month' => $prev_month]) }}"
+                <a href="{{ route('admin.staff.attendance.list', ['id' => $user->id, 'month' => $prev_month]) }}"
                     class="flex justify-center items-center gap-2 font-bold text-normal text-[#737373] px-2 py-1 rounded hover:bg-gray-100">
                     <img src="{{ asset('images/arrow.png') }}" alt="前月へ" class="h-4 w-5 opacity-30">前月</a>
                 {{-- 表示中の年月 --}}
@@ -15,13 +15,17 @@
                     {{ $date->format('Y/m') }}
                 </span>
                 {{-- 翌月へ --}}
-                <a href="{{ route('attendance.list', ['month' => $next_month]) }}"
+                <a href="{{ route('admin.staff.attendance.list', ['id' => $user->id, 'month' => $next_month]) }}"
                     class="flex justify-center items-center gap-2 font-bold text-normal text-[#737373] px-2 py-1 rounded hover:bg-gray-100">翌月
                     <img src="{{ asset('images/arrow.png') }}" alt="前月へ"
                         class="h-4 w-5 transform rotate-180 opacity-30">
                 </a>
             </div>
-            <x-attendance-table :attendances="$attendances" routeName="attendance.detail"/>
+            <x-attendance-table :attendances="$attendances" routeName="admin.attendance.detail" />
+            <div class="w-full max-w-[900px] flex justify-end mt-12">
+                <a href="{{ route('admin.attendance.export', ['id' => $user->id]) }}"
+                    class="bg-gray-900 text-white hover:bg-gray-700 inline-block px-12 py-3 text-xl font-bold rounded-md transition cursor-pointer">CSV出力</a>
+            </div>
         </div>
     </div>
 @endsection

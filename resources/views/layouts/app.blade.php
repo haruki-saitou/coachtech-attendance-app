@@ -26,8 +26,8 @@
                             <a href="{{ route('stamp.list') }}" class="hover:text-gray-300">申請</a>
                         @elsecan('admin')
                             <a href="{{ route('admin.attendance.list') }}" class="hover:text-gray-300">勤怠一覧</a>
-                            <a href="#" class="hover:text-gray-300">スタッフ一覧</a>
-                            <a href="#" class="hover:text-gray-300">申請一覧</a>
+                            <a href="{{ route('admin.staff.list') }}" class="hover:text-gray-300">スタッフ一覧</a>
+                            <a href="{{ route('admin.stamp.approve', ['attendance_correct_request_id' => 'list']) }}" class="hover:text-gray-300">申請一覧</a>
                         @endcan
                         <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                             @csrf
@@ -39,12 +39,12 @@
         </div>
     </header>
 
-    <main class="tracking-[0.15em]">
+    <main class="tracking-[0.1em]">
         @yield('content')
     </main>
     @yield('js')
     <script>
-        window.onload = function() {
+        function autoHideMessage() {
             const message = document.getElementById('flash-message');
             if (message) {
                 setTimeout(() => {
@@ -55,7 +55,11 @@
                     }, 1000);
                 }, 3000);
             }
-        };
+        }
+
+        window.onload = autoHideMessage;
+        const observer = new MutationObserver(autoHideMessage);
+        observer.observe(document.body, { childList: true, subtree: true});
     </script>
 </body>
 

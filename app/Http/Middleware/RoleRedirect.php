@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\Admin\AdminAttendanceController;
+use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AttendanceController;
 use Closure;
 use Illuminate\Http\Request;

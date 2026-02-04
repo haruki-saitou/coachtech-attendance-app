@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\AttendanceCorrect;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\Models\AttendanceCorrect;
 
-class AttendanceController extends Controller
+
+class StaffAttendanceController extends Controller
 {
     // 勤怠画面表示
     public function attendance_top()
@@ -89,21 +90,6 @@ class AttendanceController extends Controller
         return view('staff.attendance_list', compact('attendances', 'date', 'prev_month', 'next_month'));
     }
 
-    public function attendance_detail($id)
-    {
-        $attendance = Attendance::with('rests', 'user')->findOrFail($id);
-
-        $loginUser = Auth::user();
-
-        if ($loginUser->cannot('admin') && $loginUser->id !== $attendance->user_id) {
-            abort(403);
-        }
-        $user = $attendance->user;
-        $attendanceCorrect = AttendanceCorrect::where('attendance_id', $attendance->id)->latest()->first();
-
-        return view('staff.attendance_detail', compact('attendance', 'user', 'attendanceCorrect'));
-    }
-
     public function attendance_detail_update(Request $request, $id)
     {
         $user = Auth::user();
@@ -124,7 +110,7 @@ class AttendanceController extends Controller
                 continue;
             $updated_rests[] = [
                 'start_at' => Carbon::parse($date . ' ' . $start)->toDateTimeString(),
-                'end_at' => isset($rest_ends[$index]) ? Carbon::parse($date . ' ' . $rest_ends[$index])->toDateTimeString() : null,
+                'end_at' => (!empty($rest_ends[$index])) ? Carbon::parse($date . ' ' . $rest_ends[$index])->toDateTimeString() : null,
             ];
         }
         AttendanceCorrect::create([
@@ -137,20 +123,6 @@ class AttendanceController extends Controller
 
         $attendance->update(['status' => '承認待ち']);
 
-        return redirect()->route('attendance.detail', ['id' => $attendance->id])->with('success', '修正依頼を申請しました。');
-    }
-
-    public function stamp_list(Request $request)
-    {
-        $user = Auth::user();
-        $tab = request()->query('tab', 'pending');
-        $query = Attendance::where('user_id', $user->id)->has('attendanceCorrect');
-        if ($tab === 'approved') {
-            $query->where('status', '承認済み');
-        } else {
-            $query->where('status', '承認待ち');
-        }
-        $correct_requests = $query->orderBy('updated_at', 'asc')->get();
-        return view('staff.stamp_list', compact('correct_requests', 'tab'));
+        return redirect()->route('attendance.detail', ['id' => $attendance->id])->with('status', '修正依頼を申請しました。');
     }
 }

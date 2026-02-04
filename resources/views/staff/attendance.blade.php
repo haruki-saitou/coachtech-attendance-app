@@ -7,6 +7,13 @@
             class="max-w-[600px] bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-2 mx-auto text-center">
             {{ session('status') }}
         </div>
+
+    @elseif (session('error'))
+        <div id="flash-message"
+            class="max-w-[600px] bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-2 mx-auto text-center">
+            {{ session('error') }}
+        </div>
+
     @endif
     <div
         class="container bg-[#F0EFF2] max-w-[1400px] mx-auto px-8 py-4 flex flex-col items-center justify-center min-h-[calc(100vh-80px)]">
