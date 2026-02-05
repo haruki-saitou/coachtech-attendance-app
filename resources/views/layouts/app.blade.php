@@ -13,9 +13,15 @@
     <header class="bg-black text-white w-full">
         <div class="max-w-[1400px] mx-auto px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex-shrink-0">
+                @can('staff')
                 <a href="{{ route('attendance.top') }}">
                     <img src="{{ asset('images/COACHTECH.png') }}" alt="COACHTECH" class="h-6 md:h-8">
                 </a>
+                @elsecan('admin')
+                <a href="{{ route('admin.staff.list') }}">
+                    <img src="{{ asset('images/COACHTECH.png') }}" alt="COACHTECH" class="h-6 md:h-8">
+                </a>
+                @endcan
             </div>
             @if (!Route::is('login') && !Route::is('register') && !Route::is('verification.notice'))
                 <nav class="flex items-center gap-6 lg:gap-8 text-md font-bold lg:text-md flex-shrink-0">

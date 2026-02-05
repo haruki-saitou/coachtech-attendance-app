@@ -55,32 +55,37 @@ class DatabaseSeeder extends Seeder
                 ]);
 
                 // 休憩データ（1日2回分）
-                Rest::create([
+                $rest =Rest::create([
                     'attendance_id' => $attendance->id,
                     'start_at' => $currentDate->copy()->setTime(12, 0, 0),
                     'end_at' => $currentDate->copy()->setTime(13, 0, 0),
                 ]);
 
                 if (rand(1,10) === 1) {
-                    $originalRests = $attendance->rests->map(function ($rest) {
-                        return [
-                            'start_at' => $rest->start_at->format('H:i'),
-                            'end_at' => $rest->end_at->format   ('H:i'),
-                        ];
-                    })->toArray();
+                    $originalRests = [[
+                        'start_at' => $rest->start_at->format('H:i'),
+                        'end_at' => $rest->end_at->format('H:i'),
+                    ]];
+                    $isApproved = (rand(1, 2) === 1);
 
-                    AttendanceCorrect::create([
+                    $correct = AttendanceCorrect::create([
                         'attendance_id' => $attendance->id,
                         'updated_check_in_at' => $attendance->check_in_at->copy()->setTime(9, 30, 0),
                         'updated_check_out_at' => $attendance->check_out_at->copy()->setTime(18, 30, 0),
                         'updated_rests' => $originalRests,
-                        'updated_comment' => '電車遅延のため修正お願いします。',
+                        'updated_comment' => $isApproved ? '承認済みデータ' : '承認待ちデータ',
                         'created_at' => $currentDate->copy()->setTime(19, 30, 0),
-                        'updated_at' => $currentDate->copy()->setTime(19, 30, 0),
                     ]);
-                    $attendance->update([
-                        'status' => '承認待ち'
-                    ]);
+                    if ($isApproved) {
+                        $correct->delete();
+                        $attendance->update([
+                            'status' => '承認済み',
+                        ]);
+                    }else{
+                        $attendance->update([
+                            'status' => '承認待ち',
+                        ]);
+                    }
                 }
             }
         }

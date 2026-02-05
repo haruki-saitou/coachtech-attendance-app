@@ -13,16 +13,21 @@ class CommonAttendanceController extends Controller
     public function stamp_list(Request $request) {
         $user = Auth::user();
         $tab = request()->query('tab', 'pending');
-        $status = ($tab ==='approved') ? '承認済み' : '承認待ち';
-        $query = Attendance::query();
-        if ($user->can('admin')) {
-            $dir = 'admin';
-            $query->with(['user', 'attendanceCorrect']);
-        } else {
-            $dir = 'staff';
-            $query->where('user_id', $user->id)->has('attendanceCorrect');
+        $query = ($tab === 'approved')
+            ? AttendanceCorrect::onlyTrashed()
+            : AttendanceCorrect::query();
+        $query->join('attendances', 'attendance_corrects.attendance_id', '=', 'attendances.id')
+        ->with(['attendance.user']);
+
+        if (!$user->can('admin')) {
+            $query->where('attendances.user_id', $user->id);
         }
-        $correct_requests = $query->where('status', $status)->orderBy('updated_at', 'desc')->get();
+
+        $correct_requests = $query->select('attendance_corrects.*')
+        ->reorder()
+        ->orderBy('attendances.check_in_at', 'asc')
+        ->get();
+        $dir = $user->can('admin') ? 'admin' : 'staff';
         return view($dir. '.stamp_list', compact('correct_requests', 'tab'));
     }
 
@@ -36,7 +41,10 @@ class CommonAttendanceController extends Controller
         }
         $dir = $loginUser->can('admin') ? 'admin' : 'staff';
         $user = $attendance->user;
-        $attendanceCorrect = AttendanceCorrect::where('attendance_id', $attendance->id)->latest()->first();
+        $attendanceCorrect = AttendanceCorrect::withTrashed()
+        ->where('attendance_id', $attendance->id)
+        ->latest()
+        ->first();
         return view($dir. '.attendance_detail', compact('attendance', 'user', 'attendanceCorrect'));
     }
 }

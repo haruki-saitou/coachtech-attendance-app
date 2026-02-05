@@ -72,24 +72,39 @@ class StaffAttendanceController extends Controller
         return redirect()->route('attendance.top');
     }
 
+    // 勤怠一覧
     public function attendance_list(Request $request)
     {
         $user = Auth::user();
 
         $month = $request->query('month', today()->format('Y-m'));
         $date = Carbon::parse($month);
+        $startOfMonth = $date->copy()->startOfMonth();
+        $endOfMonth = $date->copy()->endOfMonth();
 
-        $attendances = Attendance::where('user_id', $user->id)
-            ->whereBetween('check_in_at', [$date->copy()->startOfMonth(), $date->copy()->endOfMonth()])
+        $attendanceDate = Attendance::where('user_id', $user->id)
+            ->whereBetween('check_in_at', [$startOfMonth, $endOfMonth])
             ->with('rests')
-            ->orderBy('check_in_at', 'asc')
-            ->get();
+            ->get()
+            ->keyBy(function($item) {
+                return $item->check_in_at->format('Y-m-d');
+            });
+        $dates = [];
+        for($d = $startOfMonth->copy(); $d->lte($endOfMonth); $d->addDay()) {
+            $dateStr = $d->format('Y-m-d');
+
+            $dates[] = [
+                'date' => $d->copy(),
+                'attendance' => $attendanceDate->get($dateStr)
+            ];
+        }
 
         $prev_month = $date->copy()->subMonth()->format('Y-m');
         $next_month = $date->copy()->addMonth()->format('Y-m');
-        return view('staff.attendance_list', compact('attendances', 'date', 'prev_month', 'next_month'));
+        return view('staff.attendance_list', compact('date', 'dates', 'prev_month', 'next_month'));
     }
 
+    // 勤怠詳細
     public function attendance_detail_update(Request $request, $id)
     {
         $user = Auth::user();

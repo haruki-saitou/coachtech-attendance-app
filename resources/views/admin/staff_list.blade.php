@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session('status'))
+        <div id="flash-message"
+            class="max-w-[600px] bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-2 mx-auto text-center">
+            {{ session('status') }}
+        </div>
+    @endif
     <div class="container max-w-[1400px] mx-auto px-2 py-2 flex flex-col items-center min-h-[calc(100vh-80px)]">
         <div class="w-full max-w-[900px] py-14 rounded-lg">
             <h1 class="border-l-8 border-black pl-4 text-3xl font-bold mt-6 mb-6">スタッフ一覧</h1>

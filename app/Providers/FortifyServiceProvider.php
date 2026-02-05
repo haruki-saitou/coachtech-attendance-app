@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
@@ -16,7 +18,6 @@ use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 use App\Http\Requests\LoginRequest;
-
 
 
 class FortifyServiceProvider extends ServiceProvider
@@ -51,6 +52,21 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->input(Fortify::username()))->first();
+
+            if (
+                $user &&
+                Hash::check($request->input('password'), $user->password)
+            ) {
+                if ($request->is('admin/login')) {
+                    return ($user->role === 1) ? $user : null;
+                }
+                return ($user->role === 0) ? $user : null;
+            }
+            return null;
         });
 
         Fortify::loginView(function () {

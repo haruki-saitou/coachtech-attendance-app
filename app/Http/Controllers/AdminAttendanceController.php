@@ -8,6 +8,8 @@ use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\Rest;
+use App\Models\AttendanceCorrect;
 
 class AdminAttendanceController extends Controller
 {
@@ -40,21 +42,36 @@ class AdminAttendanceController extends Controller
         $user = User::findOrFail($id);
         $month = $request->query('month', today()->format('Y-m'));
         $date = Carbon::parse($month);
-        $attendances = Attendance::where('user_id', $id)
-            ->whereBetween('check_in_at', [$date->copy()->startOfMonth(), $date->copy()->endOfMonth()])
+        $startOfMonth = $date->copy()->startOfMonth();
+        $endOfMonth = $date->copy()->endOfMonth();
+        $attendanceDate = Attendance::where('user_id', $id)
+            ->whereBetween('check_in_at', [$startOfMonth, $endOfMonth])
             ->with('rests')
             ->orderBy('check_in_at', 'asc')
-            ->get();
+            ->get()->keyBy(fn ($item) => $item->check_in_at->format('Y-m-d'));
+        $dates = [];
+        for ($d = $startOfMonth->copy(); $d->lte($endOfMonth); $d->addDay()) {
+            $dates[] = [
+                'date' => $d->copy(),
+                'attendance' => $attendanceDate->get($d->format('Y-m-d')),
+            ];
+        }
         $prev_month = $date->copy()->subMonth()->format('Y-m');
         $next_month = $date->copy()->addMonth()->format('Y-m');
-        return view('admin.staff_attendance_list', compact('user', 'attendances', 'date', 'prev_month', 'next_month'));
+        return view('admin.staff_attendance_list', compact('user', 'dates', 'date', 'prev_month', 'next_month'));
     }
     public function approve_correction_request(Request $request)
     {
         $tab = $request->query('tab', 'pending');
-        $status = ($tab ==='approved') ? '承認済み' : '承認待ち';
+        $query = ($tab ==='approved')
+        ? AttendanceCorrect::onlyTrashed()
+        : AttendanceCorrect::query();
 
-        $correct_requests = Attendance::with(['user', 'attendanceCorrect'])->where('status', $status)->orderBy('updated_at', 'asc')->get();
+        $correct_requests = $query->with(['attendance.user'])
+        ->join('attendances', 'attendance_corrects.attendance_id', '=', 'attendances.id')
+        ->select('attendance_corrects.*')
+        ->orderBy('attendances.check_in_at', 'asc')
+        ->get();
 
         // 管理者専用の blade を表示
         return view('admin.stamp_list', compact('correct_requests', 'tab'));

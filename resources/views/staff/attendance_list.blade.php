@@ -21,7 +21,7 @@
                         class="h-4 w-5 transform rotate-180 opacity-30">
                 </a>
             </div>
-            <x-attendance-table :attendances="$attendances" routeName="attendance.detail"/>
+            <x-attendance-table :dates="$dates" routeName="attendance.detail"/>
         </div>
     </div>
 @endsection

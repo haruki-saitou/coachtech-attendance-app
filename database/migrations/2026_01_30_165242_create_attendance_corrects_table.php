@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('updated_comment')->nullable();
             $table->json('updated_rests')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

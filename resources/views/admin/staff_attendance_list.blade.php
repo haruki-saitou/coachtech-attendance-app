@@ -21,7 +21,7 @@
                         class="h-4 w-5 transform rotate-180 opacity-30">
                 </a>
             </div>
-            <x-attendance-table :attendances="$attendances" routeName="admin.attendance.detail" />
+            <x-attendance-table :dates="$dates" :showUser="false" routeName="admin.attendance.detail" />
             <div class="w-full max-w-[900px] flex justify-end mt-12">
                 <a href="{{ route('admin.attendance.export', ['id' => $user->id]) }}"
                     class="bg-gray-900 text-white hover:bg-gray-700 inline-block px-12 py-3 text-xl font-bold rounded-md transition cursor-pointer">CSV出力</a>

@@ -5,12 +5,12 @@ use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\CommonAttendanceController;
 use App\Http\Controllers\RestController;
 use App\Http\Controllers\StaffAttendanceController;
-
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 // 管理者ログイン関連
 Route::prefix('admin')->group(function () {
     Route::get('/login', fn () => view('auth.admin_login'))->name('admin.login');
-    Route::post('/login', [\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class, 'store'])->name('admin.login.post');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('admin.login.post');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

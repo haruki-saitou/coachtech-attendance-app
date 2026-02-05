@@ -1,12 +1,6 @@
 @extends('layouts.app', ['bodyClass' => 'bg-white'])
 
 @section('content')
-    @if (session('status'))
-        <div id="flash-message"
-            class="max-w-[600px] bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-2 mx-auto text-center">
-            {{ session('status') }}
-        </div>
-    @endif
     <div class="max-w-[1400px] mx-auto flex flex-col items-center justify-center py-20 px-4">
         <h1 class="text-2xl font-bold mb-10">管理者ログイン</h1>
         <form method="POST" action="" class="w-full max-w-[600px]" novalidate>
