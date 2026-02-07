@@ -23,13 +23,10 @@ class UpdateAttendanceRequest extends FormRequest
      */
     public function rules(): array
     {
-        /** @var \App\Models\User|null $user */
-        $user = Auth::user();
-        $isAdmin = ($user && $user->can('admin'));
         return [
-            'comment' => [$isAdmin ? 'nullable' : 'required', 'string', 'max:255'],
+            'comment' => ['required', 'string', 'max:255'],
             'check_in_at' => ['required', 'date_format:H:i'],
-            'check_out_at' => [$isAdmin ? 'nullable' : 'required', 'after:check_in_at', 'date_format:H:i'],
+            'check_out_at' => ['required', 'after:check_in_at', 'date_format:H:i'],
             'rest_start.*' => ['nullable', 'date_format:H:i', 'after_or_equal:check_in_at', 'before_or_equal:check_out_at'],
             'rest_end.*' => ['nullable', 'after:rest_start.*', 'date_format:H:i', 'before_or_equal:check_out_at'],
         ];

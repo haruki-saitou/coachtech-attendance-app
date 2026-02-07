@@ -14,13 +14,15 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
     // ============================================================
-    // 🕊️ 共通エリア（管理者・スタッフ双方）
+    // 👥 共通エリア（管理者・スタッフ双方）
     // ============================================================
-
-    // 申請一覧のルート（認証ミドルウェアで区別）
+    // 申請一覧のルート（共通パスを使用）
     Route::get('/stamp_correction_request/list', [CommonAttendanceController::class, 'stamp_list'])->name('stamp.list');
-    // 勤怠詳細画面のルート
+    // 勤怠詳細画面(スタッフ専用)のルート
     Route::get('/attendance/detail/{id}', [CommonAttendanceController::class, 'detail'])->name('attendance.detail');
     // 勤怠修正申請のルート
     Route::patch('/attendance/detail/{id}', [StaffAttendanceController::class, 'attendance_detail_update'])->name('attendance.update');
