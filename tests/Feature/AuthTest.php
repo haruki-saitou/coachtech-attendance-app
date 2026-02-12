@@ -120,6 +120,7 @@ class AuthTest extends TestCase
 
     public function test_verified_user_can_access_attendance_page()
     {
+        /** @var User $user */
         $user = User::factory()->create([
             'email_verified_at' => now(),
         ]);

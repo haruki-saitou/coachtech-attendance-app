@@ -7,16 +7,22 @@ use App\Http\Controllers\RestController;
 use App\Http\Controllers\StaffAttendanceController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
+// http://localhost/ にアクセスした場合のルート
+Route::get('/', function () {
+    return redirect('/login');
+});
 // 管理者ログイン関連
 Route::prefix('admin')->group(function () {
     Route::get('/login', fn () => view('auth.admin_login'))->name('admin.login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('admin.login.post');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/email/verify', function () {
         return view('auth.verify-email');
     })->name('verification.notice');
+});
+    Route::middleware(['auth', 'verified'])->group(function () {
     // ============================================================
     // 👥 共通エリア（管理者・スタッフ双方）
     // ============================================================

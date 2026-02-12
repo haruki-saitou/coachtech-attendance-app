@@ -13,6 +13,7 @@ class AttendanceTest extends TestCase
     use RefreshDatabase;
     public function test_attendance_page_displays_current_time(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         Carbon::setTestNow(now());
 
@@ -24,6 +25,7 @@ class AttendanceTest extends TestCase
 
     public function test_buttons_status_before_clock_in(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $response = $this->actingAs($user)->get('/attendance');
         $response->assertSee('出勤');
@@ -31,6 +33,7 @@ class AttendanceTest extends TestCase
 
     public function test_clock_in_successfully(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $response = $this->actingAs($user)->post('/attendance/start/');
         $this->assertDatabaseHas('attendances',[
@@ -45,6 +48,7 @@ class AttendanceTest extends TestCase
 
     public function test_break_in_successfully(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $this->actingAs($user)->post('/attendance/start/');
         $attendance = Attendance::where('user_id', $user->id)->first();
@@ -56,6 +60,7 @@ class AttendanceTest extends TestCase
 
     public function test_break_out_successfully(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $this->actingAs($user)->post('/attendance/start/');
         $this->actingAs($user)->post('/rest/start/');
@@ -67,6 +72,7 @@ class AttendanceTest extends TestCase
 
     public function test_clock_out_successfully(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $this->actingAs($user)->post('/attendance/start/');
         $this->actingAs($user)->post('/attendance/end/');

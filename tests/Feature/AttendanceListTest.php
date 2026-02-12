@@ -14,6 +14,7 @@ class AttendanceListTest extends TestCase
 
     public function test_my_attendance_is_displayed_on_list()
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,
@@ -28,6 +29,7 @@ class AttendanceListTest extends TestCase
 
     public function test_can_navigate_to_previous_and_next_month()
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $lastMonth = Carbon::now()->subMonth();
         Attendance::factory()->create([
@@ -41,6 +43,7 @@ class AttendanceListTest extends TestCase
 
 
     public function test_can_navigate_to_attendance_detail_page() {
+        /** @var User $user */
         $user = User::factory()->create();
         $attendance = Attendance::factory()->create([
             'user_id' => $user->id,

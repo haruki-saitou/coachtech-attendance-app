@@ -13,6 +13,7 @@ class CorrectionTest extends TestCase
 
     public function test_staff_can_submit_correction_request()
     {
+        /** @var User $staff */
         $staff = User::factory()->create(['role' => 0]);
         $attendance = Attendance::factory()->create([
             'user_id' => $staff->id,
@@ -29,6 +30,7 @@ class CorrectionTest extends TestCase
 
     public function test_admin_can_approve_correction_request()
     {
+        /** @var User $admin */
         $admin = User::factory()->create(['role' => 1]);
         $staff = User::factory()->create(['role' => 0]);
         $attendance = Attendance::factory()->create([
