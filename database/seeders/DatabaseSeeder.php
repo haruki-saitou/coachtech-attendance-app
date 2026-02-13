@@ -23,12 +23,11 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // 2. 1月の1ヶ月分のデータを作る（ループで自動作成）
-        $startDate = Carbon::create(2025, 12,1);
-        $endDate = Carbon::create(2026,1,31);
-        $totalDays = $startDate->diffInDays($endDate)+1;
+        // 2. 今日を基準に過去3ヶ月分のデータを作る（自動計算）
+        $endDate = Carbon::now()->endOfDay();
+        $startDate = $endDate->copy()->subMonths(3)->startOfDay();
 
-        for ($s = 1; $s <= 10; $s++) {
+        for ($s = 1; $s <= 6; $s++) {
             $user = User::create([
                 'name' => fake()->name(),
                 'email' => "staff{$s}@example.com",
@@ -38,9 +37,7 @@ class DatabaseSeeder extends Seeder
             ]);
 
 
-            for ($i = 0; $i < $totalDays; $i++) {
-                $currentDate = $startDate->copy()->addDays($i);
-
+            for ($currentDate = $startDate->copy(); $currentDate->lte($endDate); $currentDate->addDays(1)) {
                 // 土日はスキップ（weekendを自動判別）
                 if ($currentDate->isWeekend()) {
                     continue;
