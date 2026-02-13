@@ -1,4 +1,4 @@
-# attendance-app    
+# coachtech 勤怠管理アプリ   
   
 ## 使用技術・実行環境  
 - **Backend** : PHP 8.5.0 / Laravel 12.48.1
