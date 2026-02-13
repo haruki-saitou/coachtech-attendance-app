@@ -99,6 +99,8 @@ docker run --rm \
 ### 5.コンテナの起動と初期化
   
 > ※Apple Silicon (M1/M2/M3) 及び Intel Mac/Windows の両方に対応。
+
+**最初にDocker Desktopを開く**  
   
 Dockerコンテナをバックグラウンドで起動。  
 ```bash
