@@ -73,7 +73,20 @@ code .
 クローン直後は vendor ディレクトリがないため、  
 一時的なコンテナを使用して依存関係を解消します。  
 ```Bash
-#一時的なコンテナを作成とSailのインストール
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
+```
+> [!TIP]
+※フォルダの中に vendor という名前のフォルダが新しくできているか確認してください。  
+※ .env ファイル内の APP_URL が http://localhost になっていることを確認してください。  
+
+### 4. 実行環境（Sail）の初期化
+Laravel Sailを使用して、MySQLやMailpit（メールテストツール）を含む開発環境の構成ファイルを自動生成します。  
+```bash
 docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
@@ -81,12 +94,9 @@ docker run --rm \
     laravelsail/php84-composer:latest \
     php artisan sail:install --with=mysql,redis,mailpit
 ```
-> [!TIP]
-※フォルダの中に vendor という名前のフォルダが新しくできているか確認してください。  
-※ .env ファイル内の APP_URL が http://localhost になっていることを確認してください。  
   
 ---  
-### 4.コンテナの起動と初期化
+### 5.コンテナの起動と初期化
   
 > ※Apple Silicon (M1/M2/M3) 及び Intel Mac/Windows の両方に対応。
   
@@ -103,7 +113,7 @@ Dockerコンテナをバックグラウンドで起動。
 ```  
    
 ---  
-### 5.フロントエンドのライブラリ（Tailwindなど）をインストール  
+### 6.フロントエンドのライブラリ（Tailwindなど）をインストール  
 ```bash
 #ライブラリをインストール
 ./vendor/bin/sail npm install
@@ -122,7 +132,7 @@ CSS/JavaScriptをビルド
 ※ `./vendor/bin/sail npm run dev` を実行しているターミナルは、閉じずにそのままにしておいてください。  
   
 ---  
-### 6.メール認証の設定について  
+### 7.メール認証の設定について  
 開発環境でのメールテストには、Mailpitを使用しています。  
   
 ---   
@@ -180,6 +190,9 @@ password
 ---  
 ## 開発環境　  
 MacBook Air M4を使用して開発。  
+> [!TIP]
+※各リンクは Command (Ctrl) + クリック で別タブで開くと、この手順書を見ながら作業できてスムーズです。
+  
 [**認証**]   
    
 - 会員登録画面: http://localhost/register    
