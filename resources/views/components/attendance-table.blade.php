@@ -13,7 +13,6 @@
     <table class="w-full max-w-[900px] bg-white rounded-lg overflow-hidden mt-6 text-[#737373] table-fixed">
         <thead>
             <tr class="font-bold border-b-3 border-[#E1E1E1]">
-                {{-- コーチのアドバイス通り、割合（%）で幅を決めます --}}
                 <th class="py-2 px-2 text-left w-[20%] pl-12">{{ $showUser ? '名前' : '日付' }}</th>
                 <th class="py-2 px-2 w-[15%] text-center text-sm lg:text-base">出勤</th>
                 <th class="py-2 px-2 w-[15%] text-center text-sm lg:text-base">退勤</th>

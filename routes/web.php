@@ -7,7 +7,6 @@ use App\Http\Controllers\RestController;
 use App\Http\Controllers\StaffAttendanceController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
-// http://localhost/ にアクセスした場合のルート
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -16,16 +15,14 @@ Route::prefix('admin')->group(function () {
     Route::get('/login', fn () => view('auth.admin_login'))->name('admin.login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('admin.login.post');
 });
-
+// メール認証画面
 Route::middleware(['auth'])->group(function () {
     Route::get('/email/verify', function () {
         return view('auth.verify-email');
     })->name('verification.notice');
 });
     Route::middleware(['auth', 'verified'])->group(function () {
-    // ============================================================
     // 👥 共通エリア（管理者・スタッフ双方）
-    // ============================================================
     // 申請一覧のルート（共通パスを使用）
     Route::get('/stamp_correction_request/list', [CommonAttendanceController::class, 'stamp_list'])->name('stamp.list');
     // 勤怠詳細画面(スタッフ専用)のルート
@@ -33,9 +30,7 @@ Route::middleware(['auth'])->group(function () {
     // 勤怠修正申請のルート
     Route::patch('/attendance/detail/{id}', [StaffAttendanceController::class, 'attendance_detail_update'])->name('attendance.update');
 
-    // ============================================================
     // 👑 管理者専用エリア（can:admin）
-    // ============================================================
     Route::middleware('can:admin')->group(function () {
         // スタッフ一覧画面
         Route::get('/admin/staff/list', [AdminAttendanceController::class, 'staff_list'])->name('admin.staff.list');
@@ -53,9 +48,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/attendance/export/{id}', [AdminAttendanceController::class, 'export_csv'])->name('admin.attendance.export');
     });
 
-    // ============================================================
     // 👤 スタッフ専用エリア（can:staff）
-    // ============================================================
     Route::middleware('can:staff')->group(function () {
         // 勤怠打刻画面のルート
         Route::get('/attendance', [StaffAttendanceController::class, 'attendance_top'])->name('attendance.top');

@@ -20,7 +20,6 @@ class Rest extends Model
         'end_at' => 'datetime',
     ];
 
-    // リレーションシップ: 勤怠
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);

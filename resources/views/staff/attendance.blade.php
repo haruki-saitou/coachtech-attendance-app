@@ -1,4 +1,3 @@
-{{-- 1. レイアウト（外枠）を使う --}}
 @extends('layouts.app')
 
 @section('content')

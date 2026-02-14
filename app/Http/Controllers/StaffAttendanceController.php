@@ -24,7 +24,7 @@ class StaffAttendanceController extends Controller
     }
 
     // 出勤処理
-    public function start_attendance(Request $request)
+    public function start_attendance()
     {
         $now = now();
         $user = Auth::user();
@@ -45,7 +45,7 @@ class StaffAttendanceController extends Controller
         return redirect()->route('attendance.top');
     }
     // 退勤処理
-    public function end_attendance(Request $request)
+    public function end_attendance()
     {
         $now = now();
         $user = Auth::user();

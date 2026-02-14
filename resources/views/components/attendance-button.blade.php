@@ -1,4 +1,3 @@
-{{-- 1. レイアウト（外枠）を使う --}}
 @props(['text', 'action', 'type' => 'main', 'disabled' => false])
 
 @php

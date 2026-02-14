@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Attendance;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 
 class RestController extends Controller
 {
-    public function start_rest(Request $request)
+    public function start_rest()
     {
         $now = now();
         $user = Auth::user();
@@ -35,7 +33,7 @@ class RestController extends Controller
         return redirect()->route('attendance.top');
     }
 
-    public function end_rest(Request $request)
+    public function end_rest()
     {
         $now = now();
         $user = Auth::user();

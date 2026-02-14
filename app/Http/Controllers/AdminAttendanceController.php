@@ -6,17 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use App\Models\Rest;
 use App\Models\AttendanceCorrect;
 
 class AdminAttendanceController extends Controller
 {
-/**
-* 全スタッフの修正申請を一覧で出す（管理者用）
-*/
-
     public function admin_attendance_list(Request $request)
     {
         $date = Carbon::parse($request->query('date', today()->format('Y-m-d')));
@@ -73,11 +67,10 @@ class AdminAttendanceController extends Controller
         ->orderBy('attendances.check_in_at', 'asc')
         ->get();
 
-        // 管理者専用の blade を表示
         return view('admin.stamp_list', compact('correct_requests', 'tab'));
     }
 
-    public function approve_attendance(Request $request, $attendance_correct_request_id)
+    public function approve_attendance($attendance_correct_request_id)
     {
         $attendance = Attendance::with('attendanceCorrect')->findOrFail($attendance_correct_request_id);
         $correct = $attendance->attendanceCorrect;
