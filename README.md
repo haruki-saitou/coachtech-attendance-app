@@ -100,8 +100,9 @@ docker run --rm \
   
 > ※Apple Silicon (M1/M2/M3) 及び Intel Mac/Windows の両方に対応。
 
-**最初にDocker Desktopを開く**  
-  
+> [!TIP]
+**最初にDocker Desktopを開く**    
+   
 Dockerコンテナをバックグラウンドで起動。  
 ```bash
 #Docker起動
