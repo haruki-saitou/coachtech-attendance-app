@@ -23,19 +23,17 @@ class UpdateAttendanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comment' => ['required', 'string', 'max:255'],
             'check_in_at' => ['required', 'date_format:H:i'],
             'check_out_at' => ['required', 'after:check_in_at', 'date_format:H:i'],
             'rest_start.*' => ['nullable', 'date_format:H:i', 'after_or_equal:check_in_at', 'before_or_equal:check_out_at'],
             'rest_end.*' => ['nullable', 'after:rest_start.*', 'date_format:H:i', 'before_or_equal:check_out_at'],
+            'comment' => ['required', 'string', 'max:255'],
         ];
     }
 
     public function messages()
     {
         return [
-            'comment.required' => '備考を記入してください',
-            'comment.max' => '備考は255文字以内で入力してください',
             'check_in_at.required' => '出勤時間を記入してください',
             'check_in_at.date_format' => '出勤時間は時刻形式で入力してください',
             'check_out_at.required' => '退勤時間を記入してください',
@@ -47,6 +45,8 @@ class UpdateAttendanceRequest extends FormRequest
             'rest_end.*.date_format' => '休憩時間は時刻形式で入力してください',
             'rest_end.*.after' => '休憩時間が不適切な値です',
             'rest_end.*.before_or_equal' => '休憩時間もしくは退勤時間が不適切な値です',
+            'comment.required' => '備考を記入してください',
+            'comment.max' => '備考は255文字以内で入力してください',
         ];
     }
 }
