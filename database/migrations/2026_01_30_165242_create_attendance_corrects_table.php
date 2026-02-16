@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('attendance_corrects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('attendance_id')->unique()->constrained()->cascadeOnDelete();
             $table->dateTime('updated_check_in_at')->nullable();
             $table->dateTime('updated_check_out_at')->nullable();
             $table->text('updated_comment')->nullable();

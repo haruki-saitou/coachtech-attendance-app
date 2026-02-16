@@ -15,8 +15,8 @@
                     <thead>
                         <tr class="font-bold border-b-3 border-[#E1E1E1]">
                             <th class="py-2 px-2 text-center w-[30%] pl-12">名前</th>
-                            <th class="py-2 px-2 w-[40%] text-center text-sm lg:text-base">合計</th>
-                            <th class="py-2 px-2 w-[20%] text-center pl-12 text-sm lg:text-base">詳細</th>
+                            <th class="py-2 px-2 w-[40%] text-center text-sm lg:text-base">メールアドレス</th>
+                            <th class="py-2 px-2 w-[20%] text-center pl-12 text-sm lg:text-base">月次勤怠</th>
                         </tr>
                     </thead>
                     <tbody>

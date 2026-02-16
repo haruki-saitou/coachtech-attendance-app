@@ -6,7 +6,7 @@
         <form method="POST" action="{{ route('register') }}" class="w-full max-w-[600px]" novalidate>
             @csrf
             <div class="mb-8">
-                <label for="name" class="block text-lg font-bold mb-2">ユーザー名</label>
+                <label for="name" class="block text-lg font-bold mb-2">名前</label>
                 <input type="text" name="name" id="name"
                     class="w-full border-[1.5px] border-gray-400 p-3 rounded focus:outline-none focus:border-gray-700"
                     value="{{ old('name') }}" required>

@@ -9,7 +9,7 @@
             </h1>
         </div>
         <div class="flex justify-center">
-            <a href="http://localhost:8025/" target="_blank"
+            <a href="https://mailtrap.io/inboxes" target="_blank"
                 class="inline-block mx-auto bg-gray-300 text-black text-xl font-bold py-4 px-8 rounded-md hover:bg-gray-400 transition border border-gray-500">
                 認証はこちらから
             </a>
