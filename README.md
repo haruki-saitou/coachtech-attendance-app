@@ -92,8 +92,8 @@ docker run --rm \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
     laravelsail/php84-composer:latest \
-    php artisan sail:install --with=mysql,redis,mailpit
-```
+    php artisan sail:install --with=mysql,redis
+```  
   
 ---  
 ### 5.コンテナの起動と初期化
@@ -133,11 +133,42 @@ CSS/JavaScriptをビルド
 
 > [!IMPORTANT]
 ※ `./vendor/bin/sail npm run dev` を実行しているターミナルは、閉じずにそのままにしておいてください。  
-  
+
+
 ---  
 ### 7.メール認証の設定について  
-開発環境でのメールテストには、[Mailpit](http://localhost:8025) を使用しています。  
-[Mailpit](http://localhost:8025) を使用して、送信されたメールをブラウザ上で確認できます。  
+開発環境でのメールテストには、Mailtrapを使用しています。  
+
+「事前準備」  
+1. [Mailtrap](https://mailtrap.io/ja/)にログインする。
+> [!TIP]
+※別タブで開くことを推奨します。
+Macなら Command、Windowsなら Ctrl キーを押しながらクリックすると、
+このページを閉じずに別タブで開くことができます。
+2. マイサンドボックスを開き、⚙️設定内の Code Samples で Laravel 9+
+に変更して表示された内容をcopyをクリックしてコピーする。
+3. 表示された以下の情報を、プロジェクトの `.env` ファイルに反映してください。   
+`MAIL_MAILER=smtp`  
+`MAIL_HOST`  
+`MAIL_PORT`  
+`MAIL_USERNAME`  
+`MAIL_PASSWORD`  
+これにより、新規登録時の認証メールが Mailtrap の管理画面上で確認できるようになります。  
+  
+※アカウントがない場合  
+1. [Mailtrap](https://mailtrap.io/ja/)でアカウントを作成する。  
+2. サンドボックスを選択。  
+3. メールサンドボックスのテストを開始する。  
+4. カスタムでLaravelを選択。  
+5. Code Samplesのセレクターで「Laravel 9+」を選択します。  
+> [!TIP]
+※表示された内容をcopyをクリックしてコピーしてください。  
+6. 表示された以下の情報を、プロジェクトの `.env` ファイルに反映してください。
+> `MAIL_MAILER=smtp`  
+`MAIL_HOST`  
+`MAIL_PORT`  
+`MAIL_USERNAME`  
+`MAIL_PASSWORD`  
   
 ---   
 ## テストケース  
@@ -271,7 +302,7 @@ MacBook Air M4を使用して開発。
 | カラム名            | 論理名 | 型                | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY    |
 |:---|:---|:---|:---:|:---:|:---:|:---:|
 | id                 | ID | bigint unsigned  | **PK**          |    -        | ◯        |    -            |
-| attendance_id      | 勤怠ID | bigint unsigned  |     -        |   -         | ◯        | attendances(id)      |
+| attendance_id      | 勤怠ID | bigint unsigned  |     -        |   ◯         | ◯        | attendances(id)      |
 | updated_check_in_at | 修正出勤時間 | datetime     |   -          |  -          | ◯        |   -             |
 | updated_check_out_at | 修正退勤時間 | datetime     |  -           | -           | ◯        |    -            |
 | updated_comment    | 修正理由 | text     |   -          |   -         | ◯        |     -           |
